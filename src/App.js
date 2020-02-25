@@ -1,25 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Admin, Resource, ListGuesser, EditGuesser } from "react-admin";
+
+import jsonapiClient from "./DataProvider";
+import authProvider from "./auth/authProvider";
+
+// Icons
+import UserIcon from "@material-ui/icons/Person";
+import CompaniesIcon from "@material-ui/icons/BusinessCenter";
+import CustomerIcon from "@material-ui/icons/People";
+import ProjectIcon from "@material-ui/icons/AccountTree";
+
+// Resources
+import Dashboard from "./resources/Dashboard";
+import { UserList, UserEdit, UserCreate } from "./resources/UserList";
+
+const dataProvider = jsonapiClient("http://localhost:3001/api");
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Admin
+      dashboard={Dashboard}
+      authProvider={authProvider}
+      dataProvider={dataProvider}
+    >
+      <Resource
+        name="user"
+        list={UserList}
+        create={UserCreate}
+        edit={UserEdit}
+        icon={UserIcon}
+      />
+      <Resource name="companies" list={ListGuesser} icon={CompaniesIcon} />
+      <Resource name="customer" list={ListGuesser} icon={CustomerIcon} />
+      <Resource name="project" list={ListGuesser} icon={ProjectIcon} />
+    </Admin>
   );
 }
 
